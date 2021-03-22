@@ -1,6 +1,5 @@
 var Apikey = "324a506b2f6b0f1b44fde14916e4b006";
-var currentDate = new Date()
-
+var currentDate = new Date();
 console.log(currentDate)
 //Function to get data from API and append it to result
 function getweatherdata(city) {
@@ -52,4 +51,6 @@ $("#submit").on("click", function () {
     } else {
         getweatherdata(city);;
     }
-})
+});
+
+
