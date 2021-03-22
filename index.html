@@ -13,32 +13,27 @@
 
 <body>
     <div class="container">
-        <div class="row justify-content-center h1">
+        <div class="row justify-content-center h1 ">
             Weather Dashbord
         </div>
         <div class="row">
 
-            <div class="col-sm-4">
-
-                <div class="input-group-sm">
-                    <div class="form-outline">
-                        <input type="search" placeholder="Austin" class="form-control-sm" id="form1" />
-                        <button type="button" class="btn btn-primary" id="submit">
-                            <label class="form-label-sm" for="form1"><i class="fas fa-search"></i></label>
-                        </button>
+            <div class="col-sm-3">
+                    <div class="input-group flex-nowrap p-3">
+                        <input type="search" placeholder="Austin" class="form-control" id="form1" />
+                        <button type="button" class="btn btn-primary" id="submit"><i class="fas fa-search"></i></button>
                     </div>
-                </div>
-
             </div>
 
-            <div class="col-sm-8">
-                <div class=" row justify-content-center h2">Right now in: </div>
-                <div class=" row ">
-                    <div class="ul list-unstyled" id="city-result"></div>
+            <div class="col-sm-9">
+                <div class=" row  ">
+                    <div class="ul border list-unstyled p-3" id="city-result"></div>
                 </div>
-                <div class="row">
-                    <div class="row"></div>
+                <div class=" row justify-content-left p-3  h2">5-Day forecast: </div>
+                    <div class="row border p-3 " id="city-week-result"></div>
                 </div>
+
+               
             </div>
         </div>
 
