@@ -13,22 +13,21 @@ function getweatherdata(city) {
         })
         .then(function (data) {
             console.log(data);
-
             //empty html before each fetch
             $("#current-weather").empty();
 
             //Create weather elements    
-            $("#current-weather").append("<h3>" + data.name + "</h3>")
+            $("#current-weather").append("<h3>" + data.name +  "</h3>")
 
             //get weather images. Big thanks to https://stackoverflow.com/questions/44177417/how-to-display-openweathermap-weather-icon for hinting the path!
             var weatherCode = data.weather[0].icon
             var imageLink = "http://openweathermap.org/img/wn/" + weatherCode + "@2x.png"
             $("#current-weather").append("<img id='weatherIcon' src=" + imageLink + ">");
 
-            //get weather data.
+            //get weather data
             $("#current-weather").append("<h6>" + data.weather[0].description + "</h6><br>");
             $("#current-weather").append("<li>" + "Temperature: " + data.main.temp + " °F" + "</li>");
-            $("#current-weather").append("<li>" + "Min-Max: " + data.main.temp_min + " °F" + " - " + data.main.temp_max + " °F" + "</li>");
+            //$("#current-weather").append("<li>" + "Min-Max: " + data.main.temp_min + " °F" + " - " + data.main.temp_max + " °F" + "</li>");
             $("#current-weather").append("<li>" + "Humidity: " + data.main.humidity + " %" + "</li>");
             $("#current-weather").append("<li>" + "Wind Speed: " + data.wind.speed + " MPH" + "</li>");
             
@@ -68,15 +67,17 @@ function getweatherdata(city) {
                 //weather conditions
                 var Condition = $("<li>").addClass("list-group-item p-2 h6").text( dailyWeather[i].weather[0].description);
                 //Max and Min temps
-                var Minmax = $("<li>").addClass("list-group-item p-2").text("Min-Max : "+ dailyWeather[i].temp.min +" °F" + " - " + dailyWeather[i].temp.max + " °F")
+                var Min = $("<li>").addClass("list-group-item p-2").text("Low : "+ dailyWeather[i].temp.min +" °F")
+                var Max = $("<li>").addClass("list-group-item p-2").text("High : " + dailyWeather[i].temp.max + " °F")
+
                 //humidity
                 var Humidity = $("<li>").addClass("list-group-item p-2").text("Humidity : " + dailyWeather[i].humidity + " %");
                 
                 //create div containers
                 $("#daily-weather").append(Card);
-                var Ul =$("<ul>").addClass("list-group list-group-flush").append(Condition,Minmax,Humidity);
+                var Ul =$("<ul>").addClass("list-group list-group-flush").append(Condition,Min,Max,Humidity);
                 var Body = $("<div>").addClass("card-body p-2").append(Ul);
-                var Card = $("<div>").addClass("card").attr("style", "width: 9rem;").append(Dte,Icon,Body);
+                var Card = $("<div>").addClass("card").attr("style", "width: 11rem;").append(Dte,Icon,Body);
             }
         })
         .catch(function (error) {
@@ -87,16 +88,13 @@ function getweatherdata(city) {
             return
         })
 };
-//Make Austin the default value when app loads
+//Austin is our defaul value when startup
 getweatherdata('Austin');
 
-//Enable submit click
+//Enable submit on click
 $("#submit").on("click", function () {
-
     var city = $("#form1").val().trim();
     if (city === "" || city === Number) {
-        //Prevent empty responses when clicking
-
         console.log("You did not type the name of a city")
         return
     } else {
