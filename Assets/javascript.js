@@ -90,26 +90,28 @@ function getweatherdata(cityName) {
 getweatherdata('Austin');
 
 var cityList =  JSON.parse(localStorage.getItem('City')) || [];
-console.log(cityList)
-function renderCities(cityList){
 
+function renderCities(cityList){
+    
     $('#cities').empty()
     for (var i = 0; i < cityList.length; i++){
+
         //create a new Li for each city name
         var cityName = $("<li>").addClass("list-group-item p-2 h6").text(cityList[i])
-                
-        $('#cities').prepend(cityName);
-    
+         $('#cities').append(cityName);
     }
-    
 }
+
+console.log(cityList)
+
+//limit size of array
 
 $("#submit").on("click", function (event) {
     event.preventDefault();
     
     //enable local storage + display list of cities on the left column
     var city = $("#form1").val().trim();
-    cityList.push(city);
+    cityList.unshift(city);
     
     localStorage.setItem('City',JSON.stringify(cityList))
     
