@@ -1,18 +1,16 @@
 var Apikey = "324a506b2f6b0f1b44fde14916e4b006";
-var currentDate = new Date()
-console.log(currentDate)
 
 //Function to get data from API and append it to result
-function getweatherdata(city) {
+function getweatherdata(cityName) {
 
     //pulling info from API
-    fetch("https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=" + Apikey)
+    fetch("https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=imperial&appid=" + Apikey)
         .then(function (response) {
-            console.log(response);
+            //console.log(response);
             return response.json();
         })
         .then(function (data) {
-            console.log(data);
+            //console.log(data);
             //empty html before each fetch
             $("#current-weather").empty();
 
@@ -27,7 +25,6 @@ function getweatherdata(city) {
             //get weather data
             $("#current-weather").append("<h6>" + data.weather[0].description + "</h6><br>");
             $("#current-weather").append("<li>" + "Temperature: " + data.main.temp + " °F" + "</li>");
-            //$("#current-weather").append("<li>" + "Min-Max: " + data.main.temp_min + " °F" + " - " + data.main.temp_max + " °F" + "</li>");
             $("#current-weather").append("<li>" + "Humidity: " + data.main.humidity + " %" + "</li>");
             $("#current-weather").append("<li>" + "Wind Speed: " + data.wind.speed + " MPH" + "</li>");
             
@@ -35,25 +32,26 @@ function getweatherdata(city) {
             var latitude = data.coord.lat
             var longitude = data.coord.lon
             
-            //chain a 5 day forecast to the original request after selecting the target city
+            //chain a 5 day forecast to the original request after selecting the target cityName
             return fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + latitude + "&lon=" + longitude + "&exclude=current,minutely,hourly,alerts&units=imperial&appid=" + Apikey);
         })
         .then(function (response2) {
-            console.log(response2)
+            //console.log(response2)
             return response2.json()
         })
         .then(function (data2) {
-            console.log(data2)
+            //console.log(data2)
 
             //append UV index  from data 2 to data1 fields    
             $("#current-weather").append("<li>" + "UV Index: " + data2.daily[0].uvi + "</li>");
+            //<<<<<<<must add severity badge >>>>
             
             //empty target html container
             $('#daily-weather').empty();
             
             //daily weather temperature array
             var dailyWeather = data2.daily
-            console.log(dailyWeather);
+            //console.log(dailyWeather);
             
             //get data for the next 5 days
             for ( var i= 1; i <= 6 ; i++){
@@ -69,11 +67,10 @@ function getweatherdata(city) {
                 //Max and Min temps
                 var Min = $("<li>").addClass("list-group-item p-2").text("Low : "+ dailyWeather[i].temp.min +" °F")
                 var Max = $("<li>").addClass("list-group-item p-2").text("High : " + dailyWeather[i].temp.max + " °F")
-
                 //humidity
                 var Humidity = $("<li>").addClass("list-group-item p-2").text("Humidity : " + dailyWeather[i].humidity + " %");
                 
-                //create div containers
+                //create bootstrap card element, append variables above
                 $("#daily-weather").append(Card);
                 var Ul =$("<ul>").addClass("list-group list-group-flush").append(Condition,Min,Max,Humidity);
                 var Body = $("<div>").addClass("card-body p-2").append(Ul);
@@ -81,25 +78,50 @@ function getweatherdata(city) {
             }
         })
         .catch(function (error) {
-            // set up so there is a default value//set city to be Austin and triger getweather.
+            // set up so there is a default value//set cityName to be Austin and triger getweather.
             // plus the console log along with a pop up error message.
             // how to prevent an error? or return the user to the default value?
             console.log("oh no! This an error message... ", error);
             return
         })
+
 };
 //Austin is our defaul value when startup
 getweatherdata('Austin');
 
-//Enable submit on click
-$("#submit").on("click", function () {
-    var city = $("#form1").val().trim();
-    if (city === "" || city === Number) {
-        console.log("You did not type the name of a city")
-        return
-    } else {
-        getweatherdata(city);;
+var cityList =  JSON.parse(localStorage.getItem('City')) || [];
+console.log(cityList)
+function renderCities(cityList){
+
+    $('#cities').empty()
+    for (var i = 0; i < cityList.lenght; i++){
+        //create a new Li for each city name
+        var cityName = $("<li>").addClass("list-group-item p-2 h6").text(cityList[i])
+                
+        $('#cities').prepend(cityName);
     }
-});
+}
+
+$("#submit").on("click", function (event) {
+    event.preventDefault();
+    
+    //enable local storage + display list of cities on the left column
+    var city = $("#form1").val().trim();
+    cityList.push(city);
+
+    
+    localStorage.setItem('City',JSON.stringify(cityList))
+    
+    $('#form1').val("")
+    
+    getweatherdata(city);
+    renderCities(cityList);
+    })
+
+   
+
+
+
+
 
 

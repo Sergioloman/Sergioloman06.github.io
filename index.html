@@ -10,59 +10,32 @@
         integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/da45c7df18.js" crossorigin="anonymous"></script>
     <link rel='stylesheet' href='./Assets/styles.css'>
-
 <body>
     <div class="container">
         <div class="row justify-content-center h1 bg-dark text-white">
             Weather Dashboard
         </div>
         <div class="row">
-
             <div class="col-md-3">
                 <div class="input-group flex-nowrap p-3">
                     <input type="search" placeholder="Austin" class="form-control" id="form1" />
                     <button type="button" class="btn btn-primary" id="submit"><i class="fas fa-search"></i></button>
                 </div>
+                <div>                
+                    <ul class="list-group list-group-flush" id="cities"></ul>
+                </div>
             </div>
-
             <div class="col-md-9">
                 <div class=" row  ">
                     <div class="ul border list-unstyled p-3" id="current-weather"></div>
                 </div>
-
-
-                
                 <div class=" row justify-content-left p-3  h2">5-Day forecast: </div>
-                <div class="row border justify-content-evenly p-3  card-group-sm " id="daily-weather">
-
-                    <!--Create the following dynamically for each element
-                  * <div class="card" style="width: 9rem;" >
-                        <h5 class="card-title">Card title</h5>
-                        <img src="..." class="card-img-top" alt="...">  
-                        <div class="card-body p-2">
-                           
-                            <ul class="list-group list-group-flush">
-                                 <li class="list-group-item p-3"></li>
-                                 <li class="list-group-item p-3"></li>
-                                 <li class="list-group-item p-3"></li>
-                                 <li class="list-group-item p-3"></li>
-                             </ul>
-                        </div>     
-                    </div>
-                    -->
-                 
-
-                </div>
+                <div class=" row border justify-content-evenly p-3  card-group-sm " id="daily-weather"></div>
             </div>
-
-
         </div>
     </div>
 
     </div>
-
-
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="Assets/javascript.js"></script>
 </body>
