@@ -94,12 +94,14 @@ console.log(cityList)
 function renderCities(cityList){
 
     $('#cities').empty()
-    for (var i = 0; i < cityList.lenght; i++){
+    for (var i = 0; i < cityList.length; i++){
         //create a new Li for each city name
         var cityName = $("<li>").addClass("list-group-item p-2 h6").text(cityList[i])
                 
         $('#cities').prepend(cityName);
+    
     }
+    
 }
 
 $("#submit").on("click", function (event) {
@@ -108,7 +110,6 @@ $("#submit").on("click", function (event) {
     //enable local storage + display list of cities on the left column
     var city = $("#form1").val().trim();
     cityList.push(city);
-
     
     localStorage.setItem('City',JSON.stringify(cityList))
     
@@ -118,7 +119,7 @@ $("#submit").on("click", function (event) {
     renderCities(cityList);
     })
 
-   
+renderCities(cityList)
 
 
 
