@@ -94,17 +94,14 @@ var cityList =  JSON.parse(localStorage.getItem('City')) || [];
 function renderCities(cityList){
     
     $('#cities').empty()
-    for (var i = 0; i < cityList.length; i++){
+    for (var i = 0; i < 6 ; i++){
 
         //create a new Li for each city name
         var cityName = $("<li>").addClass("list-group-item p-2 h6").text(cityList[i])
          $('#cities').append(cityName);
+   
     }
 }
-
-console.log(cityList)
-
-//limit size of array
 
 $("#submit").on("click", function (event) {
     event.preventDefault();
@@ -119,11 +116,10 @@ $("#submit").on("click", function (event) {
     
     getweatherdata(city);
     renderCities(cityList);
-    })
+})
 
+console.log(cityList)
 renderCities(cityList)
-
-
 
 
 
