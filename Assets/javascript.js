@@ -1,4 +1,4 @@
-var Apikey = "324a506b2f6b0f1b44fde14916e4b006";
+//Api key is hidden on the GitIgnore File
 
 //Function to get data from API and append it to result
 function getweatherdata(cityName) {
@@ -86,6 +86,8 @@ function getweatherdata(cityName) {
                 var Max = $("<li>").addClass("list-group-item p-2").text("High : " + dailyWeather[i].temp.max + " °F")
                 //humidity
                 var Humidity = $("<li>").addClass("list-group-item p-2").text("Humidity : " + dailyWeather[i].humidity + " %");
+                
+                
                 //create bootstrap card element, append variables above
                 $("#daily-weather").append(Card);
                 var Ul = $("<ul>").addClass("list-group list-group-flush").append(Condition, Min, Max, Humidity);

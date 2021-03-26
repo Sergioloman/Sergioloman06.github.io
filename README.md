@@ -42,7 +42,5 @@ Please be sure to check my work by following the links below:
 
 * Deployed link https://sergioloman.github.io/Sergioloman06.github.io/
 
-* Repository https://github.com/Sergioloman/Sergioloman06.github.io
-
 - - -
 As always, thank you for stopping by and happy coding!
