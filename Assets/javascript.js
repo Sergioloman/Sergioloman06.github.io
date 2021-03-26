@@ -6,16 +6,17 @@ function getweatherdata(cityName) {
     //pulling info from API
     fetch("https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=imperial&appid=" + Apikey)
         .then(function (response) {
-            //console.log(response);
             return response.json();
         })
         .then(function (data) {
-            //console.log(data);
             //empty html before each fetch
             $("#current-weather").empty();
 
             //Create weather elements    
-            $("#current-weather").append("<h3>" + data.name + "</h3>")
+
+            //Current City and Date
+            var currentDate = new Date(data.dt * 1000).toLocaleDateString();
+            $("#current-weather").append("<h3>" + data.name + " " + currentDate +"</h3>")
 
             //get weather images. Big thanks to https://stackoverflow.com/questions/44177417/how-to-display-openweathermap-weather-icon for hinting the path!
             var weatherCode = data.weather[0].icon
@@ -36,44 +37,40 @@ function getweatherdata(cityName) {
             return fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + latitude + "&lon=" + longitude + "&exclude=current,minutely,hourly,alerts&units=imperial&appid=" + Apikey);
         })
         .then(function (response2) {
-            //console.log(response2)
             return response2.json()
         })
         .then(function (data2) {
-            //console.log(data2)
 
-            //append UV index  from data 2 to data1 fields    
-            $("#current-weather").append("<li>" + "UV Index: " + "<span id='uv'> " + data2.daily[0].uvi +" </span>" + "</li>");
-            //<<<<<<<must add severity badge use : https://www.aimatmelanoma.org/melanoma-101/prevention/what-is-ultraviolet-uv-radiation/  >>>>
-            function colorUV(){
+            //append UV index from data2 to current weather.   
+            $("#current-weather").append("<li>" + "UV Index: " + "<span id='uv'> " + data2.daily[0].uvi + " </span>" + "</li>");
+            function colorUV() {
                 var uvIndex = data2.daily[0].uvi
-                console.log(uvIndex)
-                if (uvIndex <= 2 ){
+                //create color badges to indicate UV conditions
+                if (uvIndex <= 2) {
+                    //favorable conditions
                     $("#uv").addClass('badge rounded-pill bg-primary');
                 }
-                else if(uvIndex <= 7){
-                    $("#uv").addClass('badge rounded-pill bg-warning')
+                else if (uvIndex <= 7) {
+                    //moderate conditions
                     $("#uv").removeClass('badge rounded-pill bg-primary');
+                    $("#uv").addClass('badge rounded-pill bg-warning')
                 }
-                else{
-                    $("#uv").addClass('badge rounded-pill bg-danger')
+                else {
+                    //severe conditions
                     $("#uv").removeClass('badge rounded-pill bg-warning')
                     $("#uv").removeClass('badge rounded-pill bg-primary');
+                    $("#uv").addClass('badge rounded-pill bg-danger')
                 }
+                    //sources : https://www.epa.gov/sites/production/files/documents/uviguide.pdf
+            } colorUV()
 
-            }colorUV()
-    
+            //get weekly weather
 
-            //sources : https://www.epa.gov/sites/production/files/documents/uviguide.pdf
-            
             //empty target html container
             $('#daily-weather').empty();
 
-            //daily weather temperature array
+            //get data for the next 5 days - iterate
             var dailyWeather = data2.daily
-            //console.log(dailyWeather);
-
-            //get data for the next 5 days
             for (var i = 1; i <= 6; i++) {
 
                 //temperature icon
@@ -89,7 +86,6 @@ function getweatherdata(cityName) {
                 var Max = $("<li>").addClass("list-group-item p-2").text("High : " + dailyWeather[i].temp.max + " °F")
                 //humidity
                 var Humidity = $("<li>").addClass("list-group-item p-2").text("Humidity : " + dailyWeather[i].humidity + " %");
-
                 //create bootstrap card element, append variables above
                 $("#daily-weather").append(Card);
                 var Ul = $("<ul>").addClass("list-group list-group-flush").append(Condition, Min, Max, Humidity);
@@ -98,52 +94,47 @@ function getweatherdata(cityName) {
             }
         })
         .catch(function (error) {
-            // set up so there is a default value//set cityName to be Austin and triger getweather.
-            // plus the console log along with a pop up error message.
-            // how to prevent an error? or return the user to the default value?
-            console.log("oh no! This an error message... ", error);
+            alert("oh no! data not found :( ... ", error);
             return
         })
-
 };
-//Austin is our defaul value when startup
+//Make Austin our defaul value when startup
 getweatherdata('Austin');
 
 var cityList = JSON.parse(localStorage.getItem('City')) || [];
 
+//create buttons for previous searches
 function renderCities(cityList) {
-
+    //empty html container
     $('#cities').empty()
+
+    //create a new Li for each city name
     for (var i = 0; i < 6; i++) {
-        //create a new Li for each city name
         var cityName = $("<li>").addClass("list-group-item list-group-item-action p-2 h6 cityHistory").text(cityList[i])
         $('#cities').append(cityName);
     }
-    
-    $(".cityHistory").click( function(){
-        //i want to be able to click on each one of the Li items 
-        var history = $(this).text()
-        
-        console.log(history)
-        console.log("oh yeah click works");
 
+    //enable click function to each newly created item
+    $(".cityHistory").click(function () {
+        var history = $(this).text()
         getweatherdata(history);
-        
-    
     })
 }
 
+//search function
 $("#submit").on("click", function (event) {
     event.preventDefault();
 
     var city = $("#form1").val().trim();
     cityList.unshift(city);
 
+    //add each search to our local storage ( max array size to six items using slice() )
     if (cityList.length > 6) {
         cityList = cityList.slice(0, 6)
         localStorage.setItem('City', JSON.stringify(cityList))
     }
-
+    
+    //run our functions using search value
     $('#form1').val("")
     getweatherdata(city);
     renderCities(cityList);
