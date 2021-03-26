@@ -133,8 +133,8 @@ $("#submit").on("click", function (event) {
     //add each search to our local storage ( max array size to six items using slice() )
     if (cityList.length > 6) {
         cityList = cityList.slice(0, 6)
-        localStorage.setItem('City', JSON.stringify(cityList))
     }
+    localStorage.setItem('City', JSON.stringify(cityList))
 
     //run our functions using search value
     $('#form1').val("")
