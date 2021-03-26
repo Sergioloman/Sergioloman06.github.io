@@ -1,5 +1,5 @@
-//Api key is hidden on the GitIgnore File
-
+//Api key 
+var Apikey = "324a506b2f6b0f1b44fde14916e4b006";
 //Function to get data from API and append it to result
 function getweatherdata(cityName) {
 
