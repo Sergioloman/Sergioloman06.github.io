@@ -133,7 +133,7 @@ $("#submit").on("click", function (event) {
         cityList = cityList.slice(0, 6)
         localStorage.setItem('City', JSON.stringify(cityList))
     }
-    
+
     //run our functions using search value
     $('#form1').val("")
     getweatherdata(city);
