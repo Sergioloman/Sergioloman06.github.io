@@ -43,9 +43,29 @@ function getweatherdata(cityName) {
             //console.log(data2)
 
             //append UV index  from data 2 to data1 fields    
-            $("#current-weather").append("<li>" + "UV Index: " + data2.daily[0].uvi + "</li>");
+            $("#current-weather").append("<li>" + "UV Index: " + "<span id='uv'> " + data2.daily[0].uvi +" </span>" + "</li>");
             //<<<<<<<must add severity badge use : https://www.aimatmelanoma.org/melanoma-101/prevention/what-is-ultraviolet-uv-radiation/  >>>>
+            function colorUV(){
+                var uvIndex = data2.daily[0].uvi
+                console.log(uvIndex)
+                if (uvIndex <= 2 ){
+                    $("#uv").addClass('badge rounded-pill bg-primary');
+                }
+                else if(uvIndex <= 7){
+                    $("#uv").addClass('badge rounded-pill bg-warning')
+                    $("#uv").removeClass('badge rounded-pill bg-primary');
+                }
+                else{
+                    $("#uv").addClass('badge rounded-pill bg-danger')
+                    $("#uv").removeClass('badge rounded-pill bg-warning')
+                    $("#uv").removeClass('badge rounded-pill bg-primary');
+                }
 
+            }colorUV()
+    
+
+            //sources : https://www.epa.gov/sites/production/files/documents/uviguide.pdf
+            
             //empty target html container
             $('#daily-weather').empty();
 
@@ -94,7 +114,7 @@ var cityList = JSON.parse(localStorage.getItem('City')) || [];
 function renderCities(cityList) {
 
     $('#cities').empty()
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 6; i++) {
         //create a new Li for each city name
         var cityName = $("<li>").addClass("list-group-item list-group-item-action p-2 h6 cityHistory").text(cityList[i])
         $('#cities').append(cityName);
@@ -119,8 +139,8 @@ $("#submit").on("click", function (event) {
     var city = $("#form1").val().trim();
     cityList.unshift(city);
 
-    if (cityList.length > 10) {
-        cityList = cityList.slice(0, 10)
+    if (cityList.length > 6) {
+        cityList = cityList.slice(0, 6)
         localStorage.setItem('City', JSON.stringify(cityList))
     }
 
@@ -129,7 +149,6 @@ $("#submit").on("click", function (event) {
     renderCities(cityList);
 })
 renderCities(cityList)
-
 
 
 
