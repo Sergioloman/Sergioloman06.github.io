@@ -44,7 +44,7 @@ function getweatherdata(cityName) {
 
             //append UV index  from data 2 to data1 fields    
             $("#current-weather").append("<li>" + "UV Index: " + data2.daily[0].uvi + "</li>");
-            //<<<<<<<must add severity badge >>>>
+            //<<<<<<<must add severity badge use : https://www.aimatmelanoma.org/melanoma-101/prevention/what-is-ultraviolet-uv-radiation/  >>>>
 
             //empty target html container
             $('#daily-weather').empty();
@@ -94,11 +94,23 @@ var cityList = JSON.parse(localStorage.getItem('City')) || [];
 function renderCities(cityList) {
 
     $('#cities').empty()
-    for (var i = 0; i < 6; i++) {
+    for (var i = 0; i < 10; i++) {
         //create a new Li for each city name
-        var cityName = $("<li>").addClass("list-group-item p-2 h6 history").text(cityList[i])
+        var cityName = $("<li>").addClass("list-group-item list-group-item-action p-2 h6 cityHistory").text(cityList[i])
         $('#cities').append(cityName);
     }
+    
+    $(".cityHistory").click( function(){
+        //i want to be able to click on each one of the Li items 
+        var history = $(this).text()
+        
+        console.log(history)
+        console.log("oh yeah click works");
+
+        getweatherdata(history);
+        
+    
+    })
 }
 
 $("#submit").on("click", function (event) {
@@ -107,8 +119,8 @@ $("#submit").on("click", function (event) {
     var city = $("#form1").val().trim();
     cityList.unshift(city);
 
-    if (cityList.length > 6) {
-        cityList = cityList.slice(0, 6)
+    if (cityList.length > 10) {
+        cityList = cityList.slice(0, 10)
         localStorage.setItem('City', JSON.stringify(cityList))
     }
 
@@ -116,7 +128,6 @@ $("#submit").on("click", function (event) {
     getweatherdata(city);
     renderCities(cityList);
 })
-
 renderCities(cityList)
 
 
